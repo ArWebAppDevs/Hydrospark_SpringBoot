@@ -44,12 +44,12 @@ public class Admin {
     private UserRepo userRepo;
 
     @GetMapping("")
-    public String adminHome(Model model) throws SQLException {
-        Hydrospark hyd=hydrosparkRepo.findByName("hydrospark").get(0);
+    public String adminHome(HttpSession session,Model model) throws SQLException {
+        Hydrospark hyd=hydrosparkRepo.findByName("Hydro1...").get(0);
         Blob blob = new SerialBlob(hyd.getImg());
         byte[] bytes = blob.getBytes(1, (int) blob.length());
         String base64Image = Base64.getEncoder().encodeToString(bytes);
-        model.addAttribute("img", base64Image);
+        session.setAttribute("img", base64Image);
         System.out.println("Here");
         return "admin.html";
     }
@@ -143,13 +143,16 @@ public class Admin {
             double price= Double.parseDouble(request.getParameter("price"));
             System.out.println("asdfghjk");
             Part filePart = request.getPart("ProductImage");
-            byte[] imageBytes = filePart.getInputStream().readAllBytes();
+
             long fileSizeInBytes = filePart.getSize();
             long fileSizeInKB = fileSizeInBytes / 1024;
             if (fileSizeInKB > 50) {
                 model.addAttribute("error","Pic size should be less than 50 KB");
+                System.out.println("size exceed");
                 return "addProducts.html";
+
             }
+            byte[] imageBytes = filePart.getInputStream().readAllBytes();
             Product getProd=productRepo.findByName(prodName);
             if (getProd==null){
                 Product product=new Product(prodName,imageBytes);

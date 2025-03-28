@@ -44,7 +44,7 @@
 
         .logo {
             color: var(--accent-color);
-            font-size: 1.6rem; /* Slightly smaller font size */
+            font-size: 1.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -56,8 +56,8 @@
         .logo img {
             width: 60px;
             height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
+            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
+            /* Removed border-radius: 50% to keep the logo in its original shape */
         }
 
         /* Home Button Styling */
@@ -212,10 +212,12 @@
 <header>
     <div class="header-container">
         <div class="logo">
-<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
-            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
+            <img th:src="'data:image/png;base64,' + ${session.img}" alt="Hydrospark" />
+
             Hydrospark
         </div>
+
+
         <!-- Home Button -->
         <a th:href="@{/}" class="home-button">Home</a>
     </div>

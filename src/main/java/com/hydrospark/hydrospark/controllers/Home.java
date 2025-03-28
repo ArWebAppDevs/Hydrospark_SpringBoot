@@ -62,11 +62,11 @@ public class Home {
             prodDetails.put("url","/product/productdetails/"+prod.getProductName());
             base64Images.add(prodDetails);
         }
-        Hydrospark hyd=hydrosparkRepo.findByName("hydrospark").get(0);
+        Hydrospark hyd=hydrosparkRepo.findByName("Hydro1...").get(0);
         Blob blob = new SerialBlob(hyd.getImg());
         byte[] bytes = blob.getBytes(1, (int) blob.length());
         String base64Image = Base64.getEncoder().encodeToString(bytes);
-        model.addAttribute("img", base64Image);
+        session.setAttribute("img", base64Image);
 
 
         model.addAttribute("product", base64Images);

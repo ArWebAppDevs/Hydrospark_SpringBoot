@@ -47,12 +47,12 @@ public class Products {
 
 
     @GetMapping("")
-    public void prodHome(Model model) throws SQLException {
-        Hydrospark hyd=hydrosparkRepo.findByName("hydrospark").get(0);
+    public void prodHome(HttpSession session,Model model) throws SQLException {
+        Hydrospark hyd=hydrosparkRepo.findByName("Hydro1...").get(0);
         Blob blob = new SerialBlob(hyd.getImg());
         byte[] bytes = blob.getBytes(1, (int) blob.length());
         String base64Image = Base64.getEncoder().encodeToString(bytes);
-        model.addAttribute("img", base64Image);
+        session.setAttribute("img", base64Image);
     }
     @GetMapping("productdetails/{prodName}")
     public String getProducts(@PathVariable String prodName, Model model, HttpSession session) throws SQLException {
@@ -103,6 +103,7 @@ public class Products {
 
     @GetMapping("productdescription/{subtype}")
     public String getSubType(@PathVariable String subtype,Model model,HttpSession session) throws SQLException {
+        session.removeAttribute("error");
         subtype = URLDecoder.decode(subtype, StandardCharsets.UTF_8);
         if(session.getAttribute("user")==null && session.getAttribute("employee")==null){
             String redirectURL="product/productdescription/"+subtype;
@@ -172,7 +173,7 @@ public class Products {
                 + "Thanks and regards,\n"
                 + userDetails.email;
         emailService.sendEmail(session,"info@hydrospark.org",subject,body);
-        model.addAttribute("error","Sent enquiry to Hydrospark");
+        session.setAttribute("error","Sent enquiry to Hydrospark");
         String url= "redirect:/product/productdescription/"+subProd;
         return url;
     }

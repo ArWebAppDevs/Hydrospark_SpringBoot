@@ -42,22 +42,22 @@
     }
 
     .logo {
-        color: var(--accent-color);
-        font-size: 1.6rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .logo img {
-        width: 60px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
+            /* Removed border-radius: 50% to keep the logo in its original shape */
+        }
 
     .home-button {
         background: transparent;

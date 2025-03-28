@@ -51,7 +51,7 @@
 
         .logo {
             color: var(--accent-color);
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -63,10 +63,9 @@
         .logo img {
             width: 60px;
             height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
+            object-fit: contain; /* Changed from 'cover' to 'contain' to preserve aspect ratio */
+            /* Removed border-radius: 50% to keep the logo in its original shape */
         }
-
         .home-button {
             background: transparent;
             color: var(--accent-color);
@@ -227,6 +226,7 @@
             <img th:src="'data:img/png;base64,' + ${img}" alt="Image" />
             Hydrospark
         </div>
+
         <a th:href="@{/}" class="home-button">Home</a>
     </div>
 </header>
