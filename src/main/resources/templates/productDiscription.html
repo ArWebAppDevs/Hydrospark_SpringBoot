@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrospark - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff6b00;
+            --accent-color: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Header Styles remain unchanged */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+           /* Error Message Styling */
+.sign-in-form .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Ensure the error message spans the width of the form */
+}
+
+        .home-button {
+            background: transparent;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            margin-left: 15px;
+        }
+
+        .home-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        body {
+            min-height: 100vh;
+            padding-top: 100px;
+            background: #f5f5f5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
+                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .form-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Product Listing Styles */
+        .product-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .product-item {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .product-image {
+            flex: 0 0 200px;
+            margin-right: 20px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-details h5 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .product-details p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .product-details button {
+            padding: 10px 25px;
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-details button:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-item {
+                flex-direction: column;
+            }
+
+            .product-image {
+                flex: none;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .product-details h5 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            header {
+                padding: 20px 40px;
+            }
+
+            .header-container {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
+            <img th:src="'data:img/png;base64,' + ${img}" alt="Image" />
+            Hydrospark
+        </div>
+        <a th:href="@{/}" class="home-button">Home</a>
+    </div>
+</header>
+
+<div class="form-container">
+
+
+    <div class="product-container">
+        <div th:each="prod : ${product}" class="product-item">
+            <div class="product-image">
+                <img th:src="'data:image/png;base64,' + ${prod.img}" alt="Product Image"/>
+            </div>
+            <div class="product-details">
+                <h5 th:text="${prod.prodName}"></h5>
+                <p th:text="${prod.description}"></p>
+                <form th:action="@{${prod.enquiry}}" method="post">
+                    <div th:if="${error}" style="color: red;" class="error-message">
+                        <p th:text="${error}"></p>
+                    </div>
+                    <button type="submit">Make an Enquiry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navButtons = document.querySelector('.nav-buttons');
+        navButtons.classList.toggle('active');
+    }
+</script>
+</body>
+</html>

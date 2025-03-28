@@ -1,0 +1,1741 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrospark</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff6b00;
+            --accent-color: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .search-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: auto;
+            position: relative;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px 8px 35px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+            /* Error Message Styling */
+.sign-in-form .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Ensure the error message spans the width of the form */
+}
+
+        .search-bar input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.7;
+        }
+
+        .hamburger {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Body Styles */
+        body {
+            background: #f5f5f5;
+            min-height: 200vh;
+            margin: 0;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            background-image: url('https://img.freepik.com/free-photo/two-worker-making-gates-smithy_7502-9153.jpg?t=st=1742722702~exp=1742726302~hmac=0a80a1f6c4949f5b22d0345a7362910380db49219c57508c79af10c6684df59a&w=1380');
+            background-size: cover;
+            background-position: center;
+            height: calc(100vh - 70px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 70px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            font-weight: 400;
+            color: #ddd;
+            animation: fadeInUp 1s ease-out 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .cta-btn {
+            padding: 12px 35px;
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fadeInUp 1s ease-out 0.6s;
+            animation-fill-mode: both;
+        }
+
+        .cta-btn:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* Learn More Section Styles */
+        .learn-more {
+            padding: 50px 20px;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .learn-more h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .learn-more p {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Cards Section */
+        .cards-section {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--accent-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .card h5 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card .explore-btn {
+            align-self: center;
+            margin-top: auto;
+            padding: 8px 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 80%;
+            text-align: center;
+        }
+
+        .card .explore-btn:hover {
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 60px;
+                height: calc(100vh - 60px);
+                padding: 30px 15px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cards-section {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .card {
+                height: 250px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            header {
+                padding: 20px 40px;
+            }
+
+            .hero {
+                margin-top: 80px;
+                height: calc(100vh - 80px);
+                padding: 60px 40px;
+            }
+
+            .cards-section {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .card {
+                padding: 20px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
+            Hydrospark
+        </div>
+        <div class="search-nav">
+            <form class="search-bar" action="/search" method="GET">
+                <i class="fas fa-search"></i>
+                <input type="text" name="query" placeholder="Search...">
+            </form>
+            <button class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-buttons" th:if="${session.employee != null}">
+                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>
+                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>
+            </div>
+            <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">
+                <a class="nav-btn" th:href="@{/profile}">Profile</a>
+                <a class="nav-btn" th:href="@{/logout}">Logout</a>
+            </div>
+            <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">
+                <a class="nav-btn" th:href="@{/signin}">Sign In</a>
+                <a class="nav-btn" th:href="@{/signup}">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Welcome to Hydrospark</h1>
+    <p>Bringing innovative solutions for your hydrological needs. Join us in making a difference.</p>
+    <a href="#" class="cta-btn">Learn More</a>
+</section>
+
+<!-- Learn More Section -->
+<section id="learn-more" class="learn-more">
+    <div class="content">
+        <h2>About Hydrospark</h2>
+        <p>We create high-quality custom hose fittings, connectors, and adaptors using stainless steel and exotic metals, tailored to meet your exact needs with precision and reliability.</p>
+    </div>
+</section>
+
+<!-- Cards Section -->
+<div class="cards-section">
+    <div th:each="prod: ${product}" class="card">
+        <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />
+        <h5 th:text="${prod.prodName}"></h5>
+        <a th:href="${prod.url}" class="explore-btn">Explore</a>
+    </div>
+</div>
+
+<script>
+    // Smooth scroll to Learn More section
+    document.querySelector('.cta-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('learn-more').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+
+    // Toggle navigation menu
+    function toggleMenu() {
+        const navButtons = document.querySelector('.nav-buttons');
+        navButtons.classList.toggle('active');
+    }
+</script>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Hydrospark</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Segoe UI', sans-serif;-->
+<!--        }-->
+
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #1a1a1a;-->
+<!--            &#45;&#45;secondary-color: #ff6b00;-->
+<!--            &#45;&#45;accent-color: #ffffff;-->
+<!--            &#45;&#45;shadow: 0 5px 15px rgba(0,0,0,0.2);-->
+<!--        }-->
+
+<!--        /* Header Styles */-->
+<!--        header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), #2d2d2d);-->
+<!--            padding: 15px 20px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            z-index: 1000;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .header-container {-->
+<!--            max-width: 1400px;-->
+<!--            margin: 0 auto;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            flex-wrap: wrap;-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 1.8rem;-->
+<!--            font-weight: 700;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 2px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .logo img {-->
+<!--            width: 60px;-->
+<!--            height: 50px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 50%;-->
+<!--        }-->
+
+<!--        .search-nav {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 15px;-->
+<!--            width: auto;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .search-bar {-->
+<!--            position: relative;-->
+<!--            width: 250px;-->
+<!--        }-->
+
+<!--        .search-bar input {-->
+<!--            width: 100%;-->
+<!--            padding: 8px 15px 8px 35px;-->
+<!--            border: none;-->
+<!--            border-radius: 20px;-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 14px;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .search-bar input:focus {-->
+<!--            outline: none;-->
+<!--            background: rgba(255, 255, 255, 0.2);-->
+<!--        }-->
+
+<!--        .search-bar input::placeholder {-->
+<!--            color: rgba(255, 255, 255, 0.7);-->
+<!--        }-->
+
+<!--        .search-bar i {-->
+<!--            position: absolute;-->
+<!--            left: 12px;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            opacity: 0.7;-->
+<!--        }-->
+
+<!--        .hamburger {-->
+<!--            font-size: 1.5rem;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            background: none;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            padding: 8px;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .nav-buttons {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            align-items: center;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .nav-btn {-->
+<!--            padding: 8px 20px;-->
+<!--            border: 2px solid var(&#45;&#45;secondary-color);-->
+<!--            border-radius: 20px;-->
+<!--            background: transparent;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-weight: 600;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 1px;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            text-decoration: none;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .nav-btn:hover {-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        /* Body Styles */-->
+<!--        body {-->
+<!--            background: #f5f5f5;-->
+<!--            min-height: 200vh;-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        /* Hero Section Styles */-->
+<!--        .hero {-->
+<!--            position: relative;-->
+<!--            max-width: 1400px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 0;-->
+<!--            text-align: center;-->
+<!--            overflow: hidden;-->
+<!--            background-image: url('https://img.freepik.com/free-photo/two-worker-making-gates-smithy_7502-9153.jpg?t=st=1742722702~exp=1742726302~hmac=0a80a1f6c4949f5b22d0345a7362910380db49219c57508c79af10c6684df59a&w=1380');-->
+<!--            background-size: cover;-->
+<!--            background-position: center;-->
+<!--            height: calc(100vh - 70px);-->
+<!--            color: white;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            margin-top: 70px;-->
+<!--        }-->
+
+<!--        .hero h1 {-->
+<!--            font-size: 3rem;-->
+<!--            margin-bottom: 20px;-->
+<!--            line-height: 1.2;-->
+<!--            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);-->
+<!--            animation: fadeInDown 1s ease-out;-->
+<!--        }-->
+
+<!--        .hero p {-->
+<!--            font-size: 1.2rem;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto 25px;-->
+<!--            font-weight: 400;-->
+<!--            color: #ddd;-->
+<!--            animation: fadeInUp 1s ease-out 0.3s;-->
+<!--            animation-fill-mode: both;-->
+<!--        }-->
+
+<!--        .cta-btn {-->
+<!--            padding: 12px 35px;-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            border: none;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1.1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 1px;-->
+<!--            animation: fadeInUp 1s ease-out 0.6s;-->
+<!--            animation-fill-mode: both;-->
+<!--        }-->
+
+<!--        .cta-btn:hover {-->
+<!--            background: #e65c00;-->
+<!--            transform: scale(1.05);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        /* Learn More Section Styles */-->
+<!--        .learn-more {-->
+<!--            padding: 50px 20px;-->
+<!--            background-color: #f0f0f0;-->
+<!--            text-align: center;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--        .learn-more h2 {-->
+<!--            font-size: 2rem;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .learn-more p {-->
+<!--            font-size: 1.1rem;-->
+<!--            color: #555;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--        }-->
+
+<!--        /* Cards Section */-->
+<!--        .cards-section {-->
+<!--            max-width: 1400px;-->
+<!--            margin: 40px auto;-->
+<!--            padding: 0 20px;-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));-->
+<!--            gap: 15px;-->
+<!--        }-->
+
+<!--        .card {-->
+<!--            background: var(&#45;&#45;accent-color);-->
+<!--            border-radius: 12px;-->
+<!--            padding: 15px;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            transition: all 0.3s ease;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            height: 300px;-->
+<!--            width: 100%;-->
+<!--            overflow: hidden;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .card img {-->
+<!--            width: 100%;-->
+<!--            height: 180px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 8px;-->
+<!--            margin-bottom: 12px;-->
+<!--        }-->
+
+<!--        .card h5 {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            font-size: 1.3rem;-->
+<!--            margin-bottom: 12px;-->
+<!--        }-->
+
+<!--        .card p {-->
+<!--            color: #666;-->
+<!--            font-size: 0.9rem;-->
+<!--            line-height: 1.5;-->
+<!--            margin-bottom: 12px;-->
+<!--            overflow: hidden;-->
+<!--            text-overflow: ellipsis;-->
+<!--        }-->
+
+<!--        .card .btn {-->
+<!--            align-self: center;-->
+<!--            margin-top: auto;-->
+<!--        }-->
+
+<!--        /* Animation Keyframes */-->
+<!--        @keyframes fadeInDown {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @keyframes fadeInUp {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* Responsive Design */-->
+<!--        @media (max-width: 768px) {-->
+<!--            .hero {-->
+<!--                margin-top: 60px;-->
+<!--                height: calc(100vh - 60px);-->
+<!--                padding: 30px 15px;-->
+<!--            }-->
+
+<!--            .hero h1 {-->
+<!--                font-size: 2rem;-->
+<!--            }-->
+
+<!--            .hero p {-->
+<!--                font-size: 1rem;-->
+<!--            }-->
+
+<!--            .cards-section {-->
+<!--                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));-->
+<!--            }-->
+
+<!--            .card {-->
+<!--                height: 250px;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (min-width: 769px) {-->
+<!--            header {-->
+<!--                padding: 20px 40px;-->
+<!--            }-->
+
+<!--            .hero {-->
+<!--                margin-top: 80px;-->
+<!--                height: calc(100vh - 80px);-->
+<!--                padding: 60px 40px;-->
+<!--            }-->
+
+<!--            .cards-section {-->
+<!--                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));-->
+<!--                gap: 20px;-->
+<!--            }-->
+
+<!--            .card {-->
+<!--                padding: 20px;-->
+<!--                height: 300px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    <div class="header-container">-->
+<!--        <div class="logo">-->
+<!--&lt;!&ndash;            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">&ndash;&gt;-->
+<!--            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />-->
+<!--            Hydrospark-->
+<!--        </div>-->
+<!--        <div class="search-nav">-->
+<!--            <form class="search-bar" action="/search" method="GET">-->
+<!--                <i class="fas fa-search"></i>-->
+<!--                <input type="text" name="query" placeholder="Search...">-->
+<!--            </form>-->
+<!--            <button class="hamburger" onclick="toggleMenu()">-->
+<!--                <i class="fas fa-bars"></i>-->
+<!--            </button>-->
+<!--            <div class="nav-buttons" th:if="${session.employee != null}">-->
+<!--                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>-->
+<!--                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>-->
+<!--            </div>-->
+<!--            <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">-->
+<!--                <a class="nav-btn" th:href="@{/profile}">Profile</a>-->
+<!--                <a class="nav-btn" th:href="@{/logout}">Logout</a>-->
+<!--            </div>-->
+<!--            <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">-->
+<!--                <a class="nav-btn" th:href="@{/signin}">Sign In</a>-->
+<!--                <a class="nav-btn" th:href="@{/signup}">Sign Up</a>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</header>-->
+
+<!--&lt;!&ndash; Hero Section &ndash;&gt;-->
+<!--<section class="hero">-->
+<!--    <h1>Welcome to Hydrospark</h1>-->
+<!--    <p>Bringing innovative solutions for your hydrological needs. Join us in making a difference.</p>-->
+<!--    <a href="#" class="cta-btn">Learn More</a>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Learn More Section &ndash;&gt;-->
+<!--<section id="learn-more" class="learn-more">-->
+<!--    <div class="content">-->
+<!--        <h2>About Hydrospark</h2>-->
+<!--        <p>We create high-quality custom hose fittings, connectors, and adaptors using stainless steel and exotic metals, tailored to meet your exact needs with precision and reliability.</p>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Cards Section &ndash;&gt;-->
+<!--<div class="cards-section">-->
+<!--    <div th:each="prod: ${product}" class="card">-->
+<!--        <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />-->
+<!--        <h5 th:text="${prod.prodName}"></h5>-->
+<!--&lt;!&ndash;        <p>Click on Explore Button to explore the Product</p>&ndash;&gt;-->
+<!--        <button th:href="${prod.url}" class="btn btn-outline-warning">Explore</button>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Smooth scroll to Learn More section-->
+<!--    document.querySelector('.cta-btn').addEventListener('click', function(e) {-->
+<!--        e.preventDefault();  // Prevent the default anchor link behavior-->
+<!--        document.getElementById('learn-more').scrollIntoView({-->
+<!--            behavior: 'smooth'-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Toggle navigation menu-->
+<!--    function toggleMenu() {-->
+<!--        const navButtons = document.querySelector('.nav-buttons');-->
+<!--        navButtons.classList.toggle('active');-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Hydrospark</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        * {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-sizing: border-box;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: 'Segoe UI', sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        :root {&ndash;&gt;-->
+<!--&lt;!&ndash;            &#45;&#45;primary-color: #1a1a1a;&ndash;&gt;-->
+<!--&lt;!&ndash;            &#45;&#45;secondary-color: #ff6b00;&ndash;&gt;-->
+<!--&lt;!&ndash;            &#45;&#45;accent-color: #ffffff;&ndash;&gt;-->
+<!--&lt;!&ndash;            &#45;&#45;shadow: 0 5px 15px rgba(0,0,0,0.2);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Header Styles */&ndash;&gt;-->
+<!--&lt;!&ndash;        header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: linear-gradient(135deg, var(&#45;&#45;primary-color), #2d2d2d);&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 15px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .header-container {&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 1400px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0 auto;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-wrap: wrap;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .logo {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.8rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: 700;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-transform: uppercase;&ndash;&gt;-->
+<!--&lt;!&ndash;            letter-spacing: 2px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .logo img {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            object-fit: cover;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-nav {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-top: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-bar {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-grow: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-bar input {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px 10px 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: rgba(255, 255, 255, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 14px;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-bar input:focus {&ndash;&gt;-->
+<!--&lt;!&ndash;            outline: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: rgba(255, 255, 255, 0.2);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-bar input::placeholder {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: rgba(255, 255, 255, 0.7);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .search-bar i {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateY(-50%);&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            opacity: 0.7;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hamburger {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.5rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            background: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .nav-buttons {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .nav-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 8px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: 2px solid var(&#45;&#45;secondary-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: transparent;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-transform: uppercase;&ndash;&gt;-->
+<!--&lt;!&ndash;            letter-spacing: 1px;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .nav-btn:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: var(&#45;&#45;secondary-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateY(-2px);&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: var(&#45;&#45;shadow);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Body Styles */&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #f5f5f5;&ndash;&gt;-->
+<!--&lt;!&ndash;            min-height: 200vh;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding-top: 100px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero {&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 1400px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0 auto;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 40px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80') no-repeat center center;&ndash;&gt;-->
+<!--&lt;!&ndash;            background-size: cover;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero::before {&ndash;&gt;-->
+<!--&lt;!&ndash;            content: '';&ndash;&gt;-->
+<!--&lt;!&ndash;            position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: rgba(0, 0, 0, 0.5);&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero h1, .hero p, .hero .cta-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 2.5rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            line-height: 1.2;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero p {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 800px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0 auto 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .cta-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 12px 35px;&ndash;&gt;-->
+<!--&lt;!&ndash;            background: var(&#45;&#45;secondary-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .cta-btn:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #e65c00;&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: scale(1.05);&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: var(&#45;&#45;shadow);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Cards Section */&ndash;&gt;-->
+<!--&lt;!&ndash;        .cards-section {&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 1400px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 40px auto;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: grid;&ndash;&gt;-->
+<!--&lt;!&ndash;            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted to match card width */&ndash;&gt;-->
+<!--&lt;!&ndash;            gap: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: var(&#45;&#45;accent-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: var(&#45;&#45;shadow);&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-direction: column;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 300px; /* Fixed width as requested */&ndash;&gt;-->
+<!--&lt;!&ndash;            height: auto; /* Flexible height */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card img {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%; /* Image takes full width of card (300px) */&ndash;&gt;-->
+<!--&lt;!&ndash;            height: auto; /* Image height adjusts proportionally */&ndash;&gt;-->
+<!--&lt;!&ndash;            object-fit: cover;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateY(-8px);&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 8px 20px rgba(0,0,0,0.3);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card h5 {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: var(&#45;&#45;primary-color);&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.3rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card p {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 0.9rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            line-height: 1.5;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-grow: 1; /* Allows description to take available space */&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .card .btn {&ndash;&gt;-->
+<!--&lt;!&ndash;            align-self: center; /* Centers the button */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Responsive Design */&ndash;&gt;-->
+<!--&lt;!&ndash;        @media (max-width: 768px) {&ndash;&gt;-->
+<!--&lt;!&ndash;            .search-nav {&ndash;&gt;-->
+<!--&lt;!&ndash;                justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;                flex-wrap: nowrap;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hamburger {&ndash;&gt;-->
+<!--&lt;!&ndash;                display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;                order: 2;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .nav-buttons {&ndash;&gt;-->
+<!--&lt;!&ndash;                display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;                flex-direction: column;&ndash;&gt;-->
+<!--&lt;!&ndash;                position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;                top: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;                left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;                width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;                background: #2d2d2d;&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;                z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .nav-buttons.active {&ndash;&gt;-->
+<!--&lt;!&ndash;                display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .nav-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;                width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;                margin-bottom: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .search-bar {&ndash;&gt;-->
+<!--&lt;!&ndash;                order: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;                max-width: calc(100% - 60px);&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 30px 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero p {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .cards-section {&ndash;&gt;-->
+<!--&lt;!&ndash;                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust for smaller screens */&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .card {&ndash;&gt;-->
+<!--&lt;!&ndash;                width: 100%; /* Full width on small screens */&ndash;&gt;-->
+<!--&lt;!&ndash;                max-width: 300px; /* Cap at 300px */&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        @media (min-width: 769px) {&ndash;&gt;-->
+<!--&lt;!&ndash;            header {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 20px 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .header-container {&ndash;&gt;-->
+<!--&lt;!&ndash;                flex-wrap: nowrap;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .search-nav {&ndash;&gt;-->
+<!--&lt;!&ndash;                width: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;                margin-top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .logo {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .search-bar {&ndash;&gt;-->
+<!--&lt;!&ndash;                max-width: 300px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hamburger {&ndash;&gt;-->
+<!--&lt;!&ndash;                display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .nav-buttons {&ndash;&gt;-->
+<!--&lt;!&ndash;                display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .nav-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 10px 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 60px 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 3.5rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .hero p {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 1.2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .cta-btn {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 15px 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 1.1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .cards-section {&ndash;&gt;-->
+<!--&lt;!&ndash;                margin: 60px auto;&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 0 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));&ndash;&gt;-->
+<!--&lt;!&ndash;                gap: 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .card {&ndash;&gt;-->
+<!--&lt;!&ndash;                padding: 25px;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .card h5 {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 1.5rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            .card p {&ndash;&gt;-->
+<!--&lt;!&ndash;                font-size: 1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="header-container">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="logo">&ndash;&gt;-->
+<!--&lt;!&ndash;            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">&ndash;&gt;-->
+<!--&lt;!&ndash;            Hydrospark&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="search-nav">&ndash;&gt;-->
+<!--&lt;!&ndash;            <form class="search-bar" action="/search" method="GET">&ndash;&gt;-->
+<!--&lt;!&ndash;                <i class="fas fa-search"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="text" name="query" placeholder="Search...">&ndash;&gt;-->
+<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="hamburger" onclick="toggleMenu()">&ndash;&gt;-->
+<!--&lt;!&ndash;                <i class="fas fa-bars"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;            </button>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash; Conditional Navigation Buttons &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="nav-buttons" th:if="${session.employee != null}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="nav-buttons" th:if="${session.employee == null and session.user != null}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/profile}">Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/logout}">Logout</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="nav-buttons" th:if="${session.employee == null and session.user == null}">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/signin}">Sign In</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-btn" th:href="@{/signup}">Sign Up</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<header>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <div class="header-container">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="logo">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            Hydrospark&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div class="search-nav">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <form class="search-bar" action="/search" method="GET">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <i class="fas fa-search"></i>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <input type="text" name="query" placeholder="Search...">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </form>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <button class="hamburger" onclick="toggleMenu()">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <i class="fas fa-bars"></i>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            <div class="nav-buttons">&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                &ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <a href="#" class="nav-btn">Sign Up</a>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;                <a href="#" class="nav-btn">Sign In</a>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="nav-buttons" th:if="${session.employee != null}">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="nav-buttons" th:if="${session.user != null}">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/profile}">Profile</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/logout}">Logout</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div class="nav-buttons" th:if="${session.user == null}">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/signin}">Signin</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <a class="nav-btn" th:href="@{/signup}">SignUp</a>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;</header>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="hero">&ndash;&gt;-->
+<!--&lt;!&ndash;    <h1>Welcome to Hydrospark</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>Your trusted partner in Hydrospark Innovations.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button class="cta-btn">Get Started</button>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="cards-section">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div th:each="prod: ${product}" class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;        <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />&ndash;&gt;-->
+<!--&lt;!&ndash;        <h5 th:text="${prod.prodName}"></h5>&ndash;&gt;-->
+<!--&lt;!&ndash;        <p>Click on Explore Button to explore the Product</p>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a th:href="${prod.url}" class="btn btn-outline-warning">Explore</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    function toggleMenu() {&ndash;&gt;-->
+<!--&lt;!&ndash;        const navButtons = document.querySelector('.nav-buttons');&ndash;&gt;-->
+<!--&lt;!&ndash;        navButtons.classList.toggle('active');&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Hydrospark</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Segoe UI', sans-serif;-->
+<!--        }-->
+
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #1a1a1a;-->
+<!--            &#45;&#45;secondary-color: #ff6b00;-->
+<!--            &#45;&#45;accent-color: #ffffff;-->
+<!--            &#45;&#45;shadow: 0 5px 15px rgba(0,0,0,0.2);-->
+<!--        }-->
+
+<!--        /* Header Styles */-->
+<!--        header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), #2d2d2d);-->
+<!--            padding: 15px 20px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            z-index: 1000;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .header-container {-->
+<!--            max-width: 1400px;-->
+<!--            margin: 0 auto;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            flex-wrap: wrap;-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 1.8rem;-->
+<!--            font-weight: 700;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 2px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .logo img {-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 50%;-->
+<!--        }-->
+
+<!--        .search-nav {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 15px;-->
+<!--            width: auto;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .search-bar {-->
+<!--            position: relative;-->
+<!--            width: 250px;-->
+<!--        }-->
+
+<!--        .search-bar input {-->
+<!--            width: 100%;-->
+<!--            padding: 8px 15px 8px 35px;-->
+<!--            border: none;-->
+<!--            border-radius: 20px;-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 14px;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .search-bar input:focus {-->
+<!--            outline: none;-->
+<!--            background: rgba(255, 255, 255, 0.2);-->
+<!--        }-->
+
+<!--        .search-bar input::placeholder {-->
+<!--            color: rgba(255, 255, 255, 0.7);-->
+<!--        }-->
+
+<!--        .search-bar i {-->
+<!--            position: absolute;-->
+<!--            left: 12px;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            opacity: 0.7;-->
+<!--        }-->
+
+<!--        .hamburger {-->
+<!--            font-size: 1.5rem;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            background: none;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            padding: 8px;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .nav-buttons {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            align-items: center;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .nav-btn {-->
+<!--            padding: 8px 20px;-->
+<!--            border: 2px solid var(&#45;&#45;secondary-color);-->
+<!--            border-radius: 20px;-->
+<!--            background: transparent;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-weight: 600;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 1px;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            text-decoration: none;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .nav-btn:hover {-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        /* Body Styles */-->
+<!--        body {-->
+<!--            background: #f5f5f5;-->
+<!--            min-height: 200vh;-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        /* Hero Section Styles */-->
+<!--        .hero {-->
+<!--            position: relative;-->
+<!--            max-width: 1400px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 0;-->
+<!--            text-align: center;-->
+<!--            overflow: hidden;-->
+<!--            background-image: url('https://img.freepik.com/free-photo/two-worker-making-gates-smithy_7502-9153.jpg?t=st=1742722702~exp=1742726302~hmac=0a80a1f6c4949f5b22d0345a7362910380db49219c57508c79af10c6684df59a&w=1380');-->
+<!--            background-size: cover;-->
+<!--            background-position: center;-->
+<!--            height: calc(100vh - 70px);-->
+<!--            color: white;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            margin-top: 70px;-->
+<!--        }-->
+
+<!--        .hero h1 {-->
+<!--            font-size: 3rem;-->
+<!--            margin-bottom: 20px;-->
+<!--            line-height: 1.2;-->
+<!--            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);-->
+<!--            animation: fadeInDown 1s ease-out;-->
+<!--        }-->
+
+<!--        .hero p {-->
+<!--            font-size: 1.2rem;-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto 25px;-->
+<!--            font-weight: 400;-->
+<!--            color: #ddd;-->
+<!--            animation: fadeInUp 1s ease-out 0.3s;-->
+<!--            animation-fill-mode: both;-->
+<!--        }-->
+
+<!--        .cta-btn {-->
+<!--            padding: 12px 35px;-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            border: none;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1.1rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 1px;-->
+<!--            animation: fadeInUp 1s ease-out 0.6s;-->
+<!--            animation-fill-mode: both;-->
+<!--        }-->
+
+<!--        .cta-btn:hover {-->
+<!--            background: #e65c00;-->
+<!--            transform: scale(1.05);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        /* Cards Section */-->
+<!--        .cards-section {-->
+<!--            max-width: 1400px;-->
+<!--            margin: 40px auto;-->
+<!--            padding: 0 20px;-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));-->
+<!--            gap: 15px;-->
+<!--        }-->
+
+<!--        .card {-->
+<!--            background: var(&#45;&#45;accent-color);-->
+<!--            border-radius: 12px;-->
+<!--            padding: 15px;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            transition: all 0.3s ease;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            height: 300px;-->
+<!--            width: 100%;-->
+<!--            overflow: hidden;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .card img {-->
+<!--            width: 100%;-->
+<!--            height: 180px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 8px;-->
+<!--            margin-bottom: 12px;-->
+<!--        }-->
+
+<!--        .card h5 {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            font-size: 1.3rem;-->
+<!--            margin-bottom: 12px;-->
+<!--        }-->
+
+<!--        .card p {-->
+<!--            color: #666;-->
+<!--            font-size: 0.9rem;-->
+<!--            line-height: 1.5;-->
+<!--            margin-bottom: 12px;-->
+<!--            overflow: hidden;-->
+<!--            text-overflow: ellipsis;-->
+<!--        }-->
+
+<!--        .card .btn {-->
+<!--            align-self: center;-->
+<!--            margin-top: auto;-->
+<!--        }-->
+
+<!--        /* Animation Keyframes */-->
+<!--        @keyframes fadeInDown {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @keyframes fadeInUp {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* Responsive Design */-->
+<!--        @media (max-width: 768px) {-->
+<!--            .hero {-->
+<!--                margin-top: 60px;-->
+<!--                height: calc(100vh - 60px);-->
+<!--                padding: 30px 15px;-->
+<!--            }-->
+
+<!--            .hero h1 {-->
+<!--                font-size: 2rem;-->
+<!--            }-->
+
+<!--            .hero p {-->
+<!--                font-size: 1rem;-->
+<!--            }-->
+
+<!--            .cards-section {-->
+<!--                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));-->
+<!--            }-->
+
+<!--            .card {-->
+<!--                height: 250px;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (min-width: 769px) {-->
+<!--            header {-->
+<!--                padding: 20px 40px;-->
+<!--            }-->
+
+<!--            .hero {-->
+<!--                margin-top: 80px;-->
+<!--                height: calc(100vh - 80px);-->
+<!--                padding: 60px 40px;-->
+<!--            }-->
+
+<!--            .cards-section {-->
+<!--                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));-->
+<!--                gap: 20px;-->
+<!--            }-->
+
+<!--            .card {-->
+<!--                padding: 20px;-->
+<!--                height: 300px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    <div class="header-container">-->
+<!--        <div class="logo">-->
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
+<!--            Hydrospark-->
+<!--        </div>-->
+<!--        <div class="search-nav">-->
+<!--            <form class="search-bar" action="/search" method="GET">-->
+<!--                <i class="fas fa-search"></i>-->
+<!--                <input type="text" name="query" placeholder="Search...">-->
+<!--            </form>-->
+<!--            <button class="hamburger" onclick="toggleMenu()">-->
+<!--                <i class="fas fa-bars"></i>-->
+<!--            </button>-->
+<!--            <div class="nav-buttons" th:if="${session.employee != null}">-->
+<!--                <a class="nav-btn" th:href="@{/admin/profile}">Profile</a>-->
+<!--                <a class="nav-btn" th:href="@{/admin/logout}">Logout</a>-->
+<!--            </div>-->
+<!--            <div class="nav-buttons" th:if="${session.employee == null}">-->
+<!--                <a class="nav-btn" th:href="@{/signin}">Login</a>-->
+<!--                <a class="nav-btn" th:href="@{/signup}">Sign Up</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</header>-->
+
+<!--&lt;!&ndash; Hero Section &ndash;&gt;-->
+<!--<section class="hero">-->
+<!--    <h1>Welcome to Hydrospark</h1>-->
+<!--    <p>Bringing innovative solutions for your hydrological needs. Join us in making a difference.</p>-->
+<!--    <a href="#" class="cta-btn">Learn More</a>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Cards Section &ndash;&gt;-->
+<!--<div class="cards-section">-->
+<!--    <div th:each="prod: ${product}" class="card">-->
+<!--        <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />-->
+<!--        <h5 th:text="${prod.prodName}"></h5>-->
+<!--        <p>Click on Explore Button to explore the Product</p>-->
+<!--        <a th:href="${prod.url}" class="btn btn-outline-warning">Explore</a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script>    function toggleMenu() {const navButtons = document.querySelector('.nav-buttons');-->
+<!--        navButtons.classList.toggle('active');    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+

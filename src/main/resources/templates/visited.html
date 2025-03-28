@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrospark - Visited Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff6b00;
+            --accent-color: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Header Styles remain unchanged */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+    /* Error Message Styling */
+.sign-in-form .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Ensure the error message spans the width of the form */
+}
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .home-button {
+            background: transparent;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            margin-left: 15px;
+        }
+
+        .home-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Body Styles with Pipe Shape Background */
+        body {
+            min-height: 100vh;
+            padding-top: 100px;
+            background: #f5f5f5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
+                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .form-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Table Styles */
+        .visited-users {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .visited-users h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--primary-color);
+        }
+
+        button {
+            padding: 8px 15px;
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover:not(:disabled) {
+            background: #e65c00;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .visited-users h2 {
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            header {
+                padding: 20px 40px;
+            }
+
+            .header-container {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
+            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
+            Hydrospark
+        </div>
+        <a th:href="@{/}" class="home-button">Home</a>
+    </div>
+</header>
+
+<div class="form-container">
+    <div class="visited-users">
+        <h2>Visited Users</h2>
+
+        <!-- Check if visited is null or empty -->
+        <div th:if="${#lists.isEmpty(visited)}">
+            <p>No views present.</p>
+        </div>
+
+        <!-- Display table when visited is not empty -->
+        <table th:unless="${#lists.isEmpty(visited)}">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Date</th>
+                <th>Contacted</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${visited}">
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.number}"></td>
+                <td th:text="${user.date}"></td>
+                <td th:text="${user.contacted}"></td>
+                <td>
+                    <form th:action="@{/admin/contacted/{id}(id=${user.email})}" method="post">
+                        <button type="submit" th:disabled="${user.contacted}">Contact</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navButtons = document.querySelector('.nav-buttons');
+        navButtons.classList.toggle('active');
+    }
+</script>
+</body>
+</html>

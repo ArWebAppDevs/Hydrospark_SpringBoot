@@ -1,0 +1,230 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroSpark</title>
+
+    <!-- Bootstrap CSS (Make sure to add Bootstrap to your project) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        /* Set a light background color for the page */
+        body {
+            background-color: #f3e6e6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Hero Section with Image */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the image fills the section */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.6); /* Dark overlay to improve text visibility */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero .btn {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hero .btn:hover {
+            background-color: #ff9200;
+            transform: scale(1.05);
+        }
+
+        /* Card Container */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive layout */
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 50px; /* Space below the card section */
+            max-width: 1200px; /* Set a fixed width for the container */
+            margin-left: auto; /* Center the container */
+            margin-right: auto; /* Center the container */
+        }
+
+        /* Individual Card */
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            font-size: 16px;
+            color: #333;
+            height: auto; /* Let the card height adjust based on content */
+            transition: transform 0.3s ease;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px; /* Space between image and button */
+        }
+
+        .card h5 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .card .btn {
+            margin-top: auto; /* Ensure button is at the bottom */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto; /* Ensure the footer is at the bottom of the page */
+        }
+
+        footer a {
+            color: #ff9200;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Wrapper to make sure content takes full height -->
+<div class="content-wrapper">
+
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-warning" href="#" th:href="@{/}">HydroSpark</a>
+
+            <a class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#" th:href="@{/}">Home</a></li>
+<!--                    <li class="nav-item"><a class="nav-link" href="#" th:href="@{/shop}">Shop</a></li>-->
+                </ul>
+
+                <form class="d-flex me-3" th:action="@{/search}" method="get">
+                    <input class="form-control form-control-dark search-input" type="search" placeholder="Search..."
+                           aria-label="Search" name="query" required>
+                    <!-- Search Button with Icon -->
+                    <button class="btn btn-outline-light ms-2" type="submit">
+                        <i class="bi bi-search"></i> <!-- Bootstrap Icon for Search -->
+                    </button>
+                </form>
+
+                <div>
+                    <!-- Conditional rendering for Login/Signup or Logout/Profile based on session -->
+                    <div th:if="${session.user != null}">
+                        <!-- If user is logged in, show Profile and Logout buttons -->
+                        <a class="btn btn-outline-light me-2" th:href="@{/profile}">Profile</a>
+                        <a class="btn btn-warning" th:href="@{/logout}">Logout</a>
+                    </div>
+                    <div th:unless="${session.user != null}">
+                        <!-- If no user, show Login and Signup buttons -->
+                        <a class="btn btn-warning" th:href="@{/signin}">Login</a>
+                        <a class="btn btn-warning" th:href="@{/signup}">Signup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Card Section -->
+    <section class="card-container">
+        <div th:each="prod: ${product}" class="card">
+            <img th:src="'data:prod.img/png;base64,' + ${prod.img}" alt="Image" />
+            <h5 th:text="${prod.prodName}"></h5>
+            <!--            <a href="/admin/productdetails/${prod.prodName}" class="btn btn-outline-warning" type="submit">Explore</a>-->
+            <!--            <a th:href="@{'/admin/productdetails/' + ${prod.prodName}}" class="btn btn-outline-warning">Explore</a>-->
+            <!--            <h5 th:text="${prod.url}"></h5>-->
+            <a th:href="${prod.url}" class="btn btn-outline-warning">Explore</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 HydroSpark. All rights reserved.</p>
+        <p><a href="https://hydrospark.com" th:href="@{https://hydrospark.com}">Visit our website</a></p>
+    </footer>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
+
+

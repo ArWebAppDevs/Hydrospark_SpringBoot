@@ -1,0 +1,477 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>All Products</title>-->
+<!--    <link rel="stylesheet" href="/css/styles.css" />-->
+<!--    <style>-->
+<!--        /* Button styles */-->
+<!--        .action-btn {-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 5px;-->
+<!--            border: none;-->
+<!--            font-weight: bold;-->
+<!--            cursor: pointer;-->
+<!--            transition: transform 0.3s, box-shadow 0.3s;-->
+<!--        }-->
+
+<!--        .edit-btn {-->
+<!--            background-color: #4CAF50;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .edit-btn:hover {-->
+<!--            background-color: #45a049;-->
+<!--            transform: translateY(-2px); /* Slight lift effect */-->
+<!--            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        .remove-btn {-->
+<!--            background-color: #f44336;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .remove-btn:hover {-->
+<!--            background-color: #e53935;-->
+<!--            transform: translateY(-2px); /* Slight lift effect */-->
+<!--            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        /* Container for buttons (if needed) */-->
+<!--        .btn-container {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            align-items: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>All Products</h1>-->
+
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Product Name</th>-->
+<!--        <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    &lt;!&ndash; Iterate over the list of products (which are maps) and show rows only if product name is not null &ndash;&gt;-->
+<!--    <tr th:each="productMap : ${products}" th:if="${productMap['prodName'] != null}">-->
+<!--        <td th:text="${productMap['prodName'] != null ? productMap['prodName'] : 'No Name Available'}"></td>-->
+<!--        <td class="btn-container">-->
+<!--            &lt;!&ndash; Edit Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${productMap['editProduct' + productMap['prodName']]}" method="post">-->
+<!--                <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />-->
+<!--                <button type="submit" class="action-btn edit-btn">Edit</button>-->
+<!--            </form>-->
+<!--            &lt;!&ndash; Remove Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${productMap['removeproduct' + productMap['prodName']]}" method="post">-->
+<!--                <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />-->
+<!--                <button type="submit" class="action-btn remove-btn">Remove</button>-->
+<!--            </form>-->
+<!--        </td>-->
+<!--    </tr>-->
+
+<!--    &lt;!&ndash; Iterate over sub-products and show rows only if sub-product name is not null &ndash;&gt;-->
+<!--    <tr th:each="subProductMap : ${products}" th:if="${subProductMap['subprodName'] != null}">-->
+<!--        <td th:text="${subProductMap['subprodName'] != null ? subProductMap['subprodName'] : 'No Sub-Product Name Available'}"></td>-->
+<!--        <td class="btn-container">-->
+<!--            &lt;!&ndash; Edit Sub-product Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${subProductMap['editsubproduct' + subProductMap['subprodName']]}" method="post">-->
+<!--                <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />-->
+<!--                <button type="submit" class="action-btn edit-btn">Edit</button>-->
+<!--            </form>-->
+<!--            &lt;!&ndash; Remove Sub-product Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${subProductMap['removesubproduct' + subProductMap['subprodName']]}" method="post">-->
+<!--                <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />-->
+<!--                <button type="submit" class="action-btn remove-btn">Remove</button>-->
+<!--            </form>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>All Products</title>-->
+<!--    <link rel="stylesheet" href="/css/styles.css" />-->
+<!--    <style>-->
+<!--        /* Button styles */-->
+<!--        .action-btn {-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 5px;-->
+<!--            border: none;-->
+<!--            font-weight: bold;-->
+<!--            cursor: pointer;-->
+<!--            transition: transform 0.3s, box-shadow 0.3s;-->
+<!--        }-->
+
+<!--        .edit-btn {-->
+<!--            background-color: #4CAF50;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .edit-btn:hover {-->
+<!--            background-color: #45a049;-->
+<!--            transform: translateY(-2px); /* Slight lift effect */-->
+<!--            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        .remove-btn {-->
+<!--            background-color: #f44336;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .remove-btn:hover {-->
+<!--            background-color: #e53935;-->
+<!--            transform: translateY(-2px); /* Slight lift effect */-->
+<!--            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        /* Container for buttons (if needed) */-->
+<!--        .btn-container {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--            align-items: center;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>All Products</h1>-->
+
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Product Name</th>-->
+<!--        <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    &lt;!&ndash; Iterate over the list of products (which are maps) and show rows only if product name is not null &ndash;&gt;-->
+<!--    <tr th:each="productMap : ${products}" th:if="${productMap['prodName'] != null}">-->
+<!--        <td th:text="${productMap['prodName'] != null ? productMap['prodName'] : 'No Name Available'}"></td>-->
+<!--        <td class="btn-container">-->
+<!--            &lt;!&ndash; Edit Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${productMap['editProduct' + productMap['prodName']]}" method="post">-->
+<!--                <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />-->
+<!--                <button type="submit" class="action-btn edit-btn">Edit</button>-->
+<!--            </form>-->
+<!--            &lt;!&ndash; Remove Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${productMap['removeproduct' + productMap['prodName']]}" method="post">-->
+<!--                <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />-->
+<!--                <button type="submit" class="action-btn remove-btn">Remove</button>-->
+<!--            </form>-->
+<!--        </td>-->
+<!--    </tr>-->
+
+<!--    &lt;!&ndash; Iterate over sub-products and show rows only if sub-product name is not null &ndash;&gt;-->
+<!--    <tr th:each="subProductMap : ${products}" th:if="${subProductMap['subprodName'] != null}">-->
+<!--        <td th:text="${subProductMap['subprodName'] != null ? subProductMap['subprodName'] : 'No Sub-Product Name Available'}"></td>-->
+<!--        <td class="btn-container">-->
+<!--            &lt;!&ndash; Edit Sub-product Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${subProductMap['editsubproduct' + subProductMap['subprodName']]}" method="post">-->
+<!--                <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />-->
+<!--                <button type="submit" class="action-btn edit-btn">Edit</button>-->
+<!--            </form>-->
+<!--            &lt;!&ndash; Remove Sub-product Form with dynamic URL &ndash;&gt;-->
+<!--            <form th:action="${subProductMap['removesubproduct' + subProductMap['subprodName']]}" method="post">-->
+<!--                <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />-->
+<!--                <button type="submit" class="action-btn remove-btn">Remove</button>-->
+<!--            </form>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrospark - Product Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff6b00;
+            --accent-color: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Header Styles remain unchanged */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start; /* Align items to the left */
+            align-items: center;
+            flex-wrap: nowrap; /* Prevent wrapping */
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 1.6rem; /* Slightly smaller font size */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Home Button Styling */
+        .home-button {
+            background: transparent;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            margin-left: 15px; /* Add space between logo and button */
+        }
+
+        .home-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Body Styles with Pipe Shape Background */
+        body {
+            min-height: 100vh;
+            padding-top: 100px;
+            background: #f5f5f5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
+                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Form Container - Just for centering */
+        .form-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Table Container Styles */
+        .product-table {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .product-table h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .product-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-table tr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0; /* Vertical padding for spacing between rows */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-table td:first-child {
+            flex-grow: 1; /* Allows the name to take up available space */
+            padding-left: 10px; /* Left padding for name */
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .product-table td:last-child {
+            display: flex;
+            gap: 10px; /* Space between Edit and Remove buttons */
+            padding-right: 10px; /* Right padding for buttons */
+        }
+        /* Error Message Styling */
+.sign-in-form .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Ensure the error message spans the width of the form */
+}
+
+        .product-table form {
+            display: inline-block;
+        }
+
+        .product-table button {
+            padding: 8px 15px;
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-table button:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .product-table h2 {
+                font-size: 1.8rem;
+            }
+
+            .product-table td:first-child {
+                font-size: 0.9rem;
+            }
+
+            .product-table button {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            header {
+                padding: 20px 40px;
+            }
+
+            .header-container {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
+            <img th:src="'data:img/png;base64,' + ${img}" alt="Image" />
+            Hydrospark
+        </div>
+        <!-- Home Button -->
+        <a th:href="@{/}" class="home-button">Home</a>
+    </div>
+</header>
+
+<div class="form-container">
+    <div class="product-table">
+        <h2>Product Management</h2>
+        <table>
+            <tbody>
+
+
+            <!-- Iterate over the list of products and show row only if prodName is not blank -->
+            <tr th:each="productMap : ${products}" th:if="${#strings.isEmpty(productMap['prodName']) == false}">
+                <td th:text="${productMap['prodName']}"></td>
+                <td>
+                    <!-- Edit Form with dynamic URL -->
+                    <form th:action="${productMap['editProduct']}" method="post">
+                        <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />
+                        <button type="submit">Edit</button>
+                    </form>
+                    <!-- Remove Form with dynamic URL -->
+                    <form th:action="${productMap['removeproduct' + productMap['prodName']]}" method="post">
+                        <input type="hidden" name="prodName" th:value="${productMap['prodName']}" />
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+
+            <!-- Iterate over sub-products and show row only if subprodName is not blank -->
+            <tr th:each="subProductMap : ${products}" th:if="${#strings.isEmpty(subProductMap['subprodName']) == false}">
+                <td th:text="${subProductMap['subprodName']}"></td>
+                <td>
+                    <!-- Edit Sub-product Form with dynamic URL -->
+                    <form th:action="${subProductMap['editsubproduct']}" method="post">
+                        <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />
+                        <button type="submit">Edit</button>
+                    </form>
+                    <!-- Remove Sub-product Form with dynamic URL -->
+                    <form th:action="${subProductMap['removesubproduct' + subProductMap['subprodName']]}" method="post">
+                        <input type="hidden" name="subprodName" th:value="${subProductMap['subprodName']}" />
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navButtons = document.querySelector('.nav-buttons');
+        navButtons.classList.toggle('active');
+    }
+</script>
+</body>
+</html>

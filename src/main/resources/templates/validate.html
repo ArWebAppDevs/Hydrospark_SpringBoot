@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrospark - Sign In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #ff6b00;
+            --accent-color: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Header Styles remain unchanged */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2d2d2d);
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start; /* Align items to the left */
+            align-items: center;
+            flex-wrap: nowrap; /* Prevent wrapping */
+        }
+
+        .logo {
+            color: var(--accent-color);
+            font-size: 1.6rem; /* Slightly smaller font size */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Home Button Styling */
+        .home-button {
+            background: transparent;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            margin-left: 15px; /* Add space between logo and button */
+        }
+
+        .home-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Body Styles with Pipe Shape Background */
+        body {
+            min-height: 100vh;
+            padding-top: 100px;
+            background: #f5f5f5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),
+                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Form Container - Just for centering */
+        .form-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Simplified Form Styles */
+        .sign-in-form {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .sign-in-form h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .sign-in-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .sign-in-form label {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .sign-in-form input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .sign-in-form input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        .sign-in-form button {
+            padding: 12px 30px;
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .sign-in-form button:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sign-in-form h2 {
+                font-size: 1.8rem;
+            }
+
+            .sign-in-form input {
+                font-size: 0.9rem;
+            }
+
+            .sign-in-form button {
+                font-size: 1rem;
+            }
+        }
+        /* Error Message Styling */
+.sign-in-form .error-message {
+    color: red;
+    text-align: center;
+    margin: 10px 0; /* Adjust margin for space between the form fields and submit button */
+    font-size: 1rem; /* Adjust font size */
+    width: 100%; /* Ensure the error message spans the width of the form */
+}
+
+        @media (min-width: 769px) {
+            header {
+                padding: 20px 40px;
+            }
+
+            .header-container {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo">
+<!--            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q9LoKyUdf3bvISFlE3Z72BAvz8fiy5z-Y1QWZ1b9dVsZrW_r0Ijv49o&s" alt="Hydrospark Logo">-->
+            <img th:src="'data:img/png;base64,' + ${img}" alt="Hydrospark" />
+            Hydrospark
+        </div>
+        <!-- Home Button -->
+        <a th:href="@{/}" class="home-button">Home</a>
+    </div>
+</header>
+
+<div class="form-container">
+    <div class="sign-in-form">
+        <form method="post" th:action="@{/validate}">
+            <h4>Enter OTP</h4>
+
+            <div class="form-group">
+                <label for="OTP">OTP</label>
+                <input type="number" id="OTP" name="OTP" required />
+            </div>
+            <div th:if="${error}" style="color: red;" class="error-message">
+                <p th:text="${error}"></p>
+            </div>
+            <button type="submit">Validate OTP</button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const navButtons = document.querySelector('.nav-buttons');
+        navButtons.classList.toggle('active');
+    }
+</script>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>HydroSpark</title>-->
+
+<!--    &lt;!&ndash; Bootstrap CSS (Make sure to add Bootstrap to your project) &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--&lt;!&ndash;        /* Set a light background color for the page */&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #f3e6e6;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Hero Section with Image */&ndash;&gt;-->
+<!--&lt;!&ndash;        .hero {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 100vh;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero img {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            object-fit: cover;&ndash;&gt;-->
+<!--&lt;!&ndash;            position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero-overlay {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: rgba(0, 0, 0, 0.6);&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-direction: column;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero-title {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 3rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero-subtitle {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.5rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero .btn {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 12px 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease-in-out;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .hero .btn:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #ff9200;&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: scale(1.05);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        /* Form Container Styling */&ndash;&gt;-->
+<!--&lt;!&ndash;        .form-container {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #ffffff;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 40px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            max-width: 400px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container h4 {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container label {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #555;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container input {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #f7f7f7;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: 1px solid #ddd;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 12px;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1rem;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container input:focus {&ndash;&gt;-->
+<!--&lt;!&ndash;            border-color: #ff9200;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 0 5px rgba(255, 146, 0, 0.8);&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container button {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #ff9200;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 12px 30px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 1.2rem;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: all 0.3s ease-in-out;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container button:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #e68200;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container p {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container a {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #ff9200;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .form-container a:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: underline;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--         * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Segoe UI', sans-serif;-->
+<!--        }-->
+
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #1a1a1a;-->
+<!--            &#45;&#45;secondary-color: #ff6b00;-->
+<!--            &#45;&#45;accent-color: #ffffff;-->
+<!--            &#45;&#45;shadow: 0 5px 15px rgba(0,0,0,0.2);-->
+<!--        }-->
+
+<!--        /* Header Styles remain unchanged */-->
+<!--        header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), #2d2d2d);-->
+<!--            padding: 15px 20px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            z-index: 1000;-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .header-container {-->
+<!--            max-width: 1400px;-->
+<!--            margin: 0 auto;-->
+<!--            display: flex;-->
+<!--            justify-content: flex-start;-->
+<!--            align-items: center;-->
+<!--            flex-wrap: nowrap;-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 1.6rem;-->
+<!--            font-weight: 700;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 2px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .logo img {-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 50%;-->
+<!--        }-->
+
+<!--        .home-button {-->
+<!--            background: transparent;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            font-size: 1.1rem;-->
+<!--            font-weight: 600;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            text-decoration: none;-->
+<!--            padding: 8px 15px;-->
+<!--            transition: all 0.3s ease;-->
+<!--            border-radius: 25px;-->
+<!--            margin-left: 15px;-->
+<!--        }-->
+
+<!--        .home-button:hover {-->
+<!--            background-color: rgba(255, 255, 255, 0.2);-->
+<!--            transform: scale(1.05);-->
+<!--        }-->
+
+<!--        body {-->
+<!--            min-height: 100vh;-->
+<!--            padding-top: 100px;-->
+<!--            background: #f5f5f5;-->
+<!--            position: relative;-->
+<!--            overflow-x: hidden;-->
+<!--        }-->
+
+<!--        body::before {-->
+<!--            content: '';-->
+<!--            position: absolute;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background:-->
+<!--                radial-gradient(circle at 20% 30%, #666 2px, transparent 3px),-->
+<!--                radial-gradient(circle at 80% 70%, #888 3px, transparent 4px),-->
+<!--                linear-gradient(45deg, transparent 45%, #666 46%, #666 54%, transparent 55%),-->
+<!--                linear-gradient(-45deg, transparent 45%, #666 46%, #666 54%, transparent 55%);-->
+<!--            background-size: 100px 100px, 150px 150px, 200px 200px;-->
+<!--            opacity: 0.1;-->
+<!--            z-index: -1;-->
+<!--        }-->
+
+<!--        .form-container {-->
+<!--            min-height: calc(100vh - 100px);-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .sign-in-form {-->
+<!--            max-width: 500px;-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        .sign-in-form h4 {-->
+<!--            font-size: 2rem;-->
+<!--            margin-bottom: 20px;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .sign-in-form .form-group {-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .sign-in-form label {-->
+<!--            font-size: 1rem;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-bottom: 8px;-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        .sign-in-form input {-->
+<!--            width: 100%;-->
+<!--            padding: 12px;-->
+<!--            border-radius: 8px;-->
+<!--            border: 2px solid #ccc;-->
+<!--            font-size: 1rem;-->
+<!--            background: rgba(255, 255, 255, 0.8);-->
+<!--            transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        .sign-in-form input:focus {-->
+<!--            border-color: var(&#45;&#45;secondary-color);-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .sign-in-form button {-->
+<!--            padding: 12px 30px;-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            border: none;-->
+<!--            border-radius: 25px;-->
+<!--            font-size: 1.2rem;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        .sign-in-form button:hover {-->
+<!--            background: #e65c00;-->
+<!--            transform: scale(1.05);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        .sign-in-form p {-->
+<!--            text-align: center;-->
+<!--            margin-top: 15px;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        .sign-in-form a {-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        .sign-in-form a:hover {-->
+<!--            text-decoration: underline;-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .sign-in-form h4 {-->
+<!--                font-size: 1.8rem;-->
+<!--            }-->
+
+<!--            .sign-in-form input {-->
+<!--                font-size: 0.9rem;-->
+<!--            }-->
+
+<!--            .sign-in-form button {-->
+<!--                font-size: 1rem;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (min-width: 769px) {-->
+<!--            header {-->
+<!--                padding: 20px 40px;-->
+<!--            }-->
+
+<!--            .header-container {-->
+<!--                flex-wrap: nowrap;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash; Wrapper to make sure content takes full height &ndash;&gt;-->
+<!--<div class="content-wrapper">-->
+
+<!--    &lt;!&ndash; Navbar &ndash;&gt;-->
+<!--    <header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">-->
+<!--        <div class="container">-->
+<!--            <a class="navbar-brand fw-bold text-warning" href="#" th:href="@{/}">HydroSpark</a>-->
+
+<!--            <a class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">-->
+<!--                <span class="navbar-toggler-icon"></span>-->
+<!--            </a>-->
+
+<!--            <div class="collapse navbar-collapse" id="navbarNav">-->
+<!--                <ul class="navbar-nav mx-auto">-->
+<!--                    <li class="nav-item"><a class="nav-link active" href="#" th:href="@{/}">Home</a></li>-->
+<!--                    <li class="nav-item"><a class="nav-link" href="#" th:href="@{/shop}">Shop</a></li>-->
+<!--                </ul>-->
+
+<!--                <div>-->
+<!--                    <a class="btn btn-warning" th:href="@{/signup}">Signup</a>-->
+<!--                    <a class="btn btn-warning" th:href="@{/admin}">Admin</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </header>-->
+
+<!--    &lt;!&ndash; Hero Section &ndash;&gt;-->
+<!--    <section class="hero">-->
+<!--        <div class="hero-overlay">-->
+<!--            &lt;!&ndash; Sign In Form &ndash;&gt;-->
+<!--            <div class="form-container">-->
+<!--                <form method="post" th:action="@{/validate}">-->
+<!--                    <h4 class="text-dark">Enter OTP</h4>-->
+
+<!--                    <div class="form-group">-->
+<!--                        <label for="OTP" class="text-dark">OTP</label>-->
+<!--                        <input type="number" class="form-control" id="OTP" name="OTP" required />-->
+<!--                    </div>-->
+
+<!--                    <button type="submit">Validate OTP</button>-->
+<!--                    <div th:if="${error}" style="color: red;">-->
+<!--                        <p th:text="${error}"></p>-->
+<!--                    </div>-->
+
+
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--    &lt;!&ndash; Footer &ndash;&gt;-->
+<!--    <footer>-->
+<!--        <p>&copy; 2025 HydroSpark. All rights reserved.</p>-->
+<!--        <p><a href="https://hydrospark.com" th:href="@{https://hydrospark.com}">Visit our website</a></p>-->
+<!--    </footer>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS and dependencies &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>-->
+<!--</body>-->
+
+<!--</html>-->
+

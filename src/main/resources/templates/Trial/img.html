@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Image Display</title>
+</head>
+<body>
+
+<img th:src="'data:image/jpeg;base64,' + ${base64Image}" alt="Image from Blob" style="width: 200px; height: 100px;"/>
+
+</body>
+</html>
